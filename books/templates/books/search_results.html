@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block stylesheet %}
+<style>
+  .card-partition {
+    float: right;
+    width: 70%;
+  }
+  .card-photo-left {
+    float: left;
+    width: 30%;
+    max-height: 160px;
+    overflow: hidden;
+  }
+  .card-photo-left img {
+    width: 90%;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="container my-4 mx-auto" style="width: 50rem;">
+  <h5 class="text-secondary">Search Results</h5>
+  {% for book in results %}
+  <div class="card mb-2">
+    <div class="card-body py-0 pl-0">
+      <div class="card-partition py-1">
+        <h5><a href="{{ book.get_absolute_url }}" class="card-link text-dark">{{book.title}}</a></h5>
+        <p class="card-text my-0 text-muted"><small class="text-muted">{{ book.get_category_display }}</small></p>
+        <p class="card-text my-0"><em class="text-secondary">{{ book.location }}</em></p>
+        <p class="card-text text-success"><strong>{% if book.is_free %}Free{% else %}Rs {{ book.price|intcomma }}{% endif %}</strong></p>
+      </div>
+
+      <div class="card-photo-left">
+        {% if book.book_photos.first.photo %}
+          <img src="{{ book.book_photos.first.photo.url }}" alt="{{ book.title|truncatechars:36 }}">
+        {% else %}
+          <img src="{% static 'img/book_placeholder.jpg' %}" alt="{{ book.title }}">
+        {% endif %}
+      </div>
+
+      <div class="clearfix">
+        <div class="float-right">
+          <a href="{% url 'contact_details' book.id %}" class="btn btn-primary py-1 js-contact-btn" data-toggle="tooltip" data-placement="top" title="Click to view contact details">Contact</a>
+          <a href="{{ book.get_absolute_url }}" class="card-link">Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="card text-center p-4">
+    <h3 class="text-secondary">No books found.</h3>
+    <p class="text-muted pt-4">Make sure that all words are spelled correctly.<br>Use different keyword for the book title.</p>
+  </div>
+  {% endfor %}
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Contact Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body p-0">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript">
+  function activatePlacesSearch() {
+    var input = document.getElementById('search_by_location');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+  }
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places&callback=activatePlacesSearch"></script>
+
+<script type="text/javascript">
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+<script type="text/javascript">
+$(function () {
+  $('.js-contact-btn').on('click', function () {
+    var $contact_btn = $(this);
+
+    $.ajax({
+      url: $contact_btn.attr('href'),
+      type: 'get',
+      dataType: 'json',
+      beforeSend: function () {
+        $("#exampleModal").modal("show");
+      },
+      success: function (data) {
+        $("#exampleModal .modal-body").html(data.html_data);
+      }
+    });
+
+    return false;
+  });
+});
+</script>
+{% endblock %}

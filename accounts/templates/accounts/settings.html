@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="card p-4 my-4 mx-auto" style="width: 50rem;">
+  <h5 class="text-muted">
+    Account Settings
+    <a class="btn btn-outline-secondary btn-sm float-right" href="{% url "homepage" %}">
+      Go Back
+    </a>
+  </h5><hr>
+
+  <form method="post" enctype="multipart/form-data" id="settings_form">
+    {% csrf_token %}
+
+    <h5 class="text-secondary">Personal Info</h5>
+    {% for field in user_form.visible_fields  %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field|add_class:'form-control bg-light' }}
+      {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    {% for field in profile_picture_form.visible_fields  %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field|add_class:'form-control bg-light' }}
+      {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+    <h5 class="text-secondary">Contact Details</h5>
+    {% for field in phone_number_form.visible_fields  %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field|add_class:'form-control bg-light' }}
+      {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+    {% for field in location_form.visible_fields  %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field|add_class:'form-control bg-light' }}
+      {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary float-right px-4 my-4" id="submit_btn">Save</button>
+    <a href="{% url 'homepage' %}" class="btn btn-default float-right px-4 my-4 mr-1">Cancel</a>
+
+  </form>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  function activatePlacesSearch() {
+    var input = document.getElementById('id_location');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+  }
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places&callback=activatePlacesSearch"></script>
+
+<script type="text/javascript">
+$(function () {
+  $('#settings_form').on('submit', function () {
+      $('#submit_btn').text('Saving...');
+      $(this).submit();
+    return false;
+  });
+});
+</script>
+{% endblock %}

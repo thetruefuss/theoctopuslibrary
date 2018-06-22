@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron text-center">
+  <h1 class="display-4">Buy & Sell Books near you!</h1>
+  <p class="lead">The Octopus Library is an online platform for selling your old books and buying books near you.</p>
+  <hr class="my-4">
+  {% if request.user.is_authenticated %}
+  <p>Share your old books for free or sell them by clicking the button below.</p>
+  <p class="lead">
+      <a class="btn btn-primary btn-lg" href="{% url 'book_post' %}" role="button">SUBMIT A BOOK</a>
+  </p>
+  {% else %}
+  <p>Want to sell your old books or buy some in affordable price, click the button below.</p>
+  <p class="lead">
+      <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">GET STARTED</a>
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  function activatePlacesSearch() {
+    var input = document.getElementById('search_by_location');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+  }
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places&callback=activatePlacesSearch"></script>
+{% endblock %}

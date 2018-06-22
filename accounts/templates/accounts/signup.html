@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="card p-4 my-4 mx-auto" style="width: 35rem;">
+  <h5>Create an Account</h5><hr>
+
+  <form method="post" data-validate-username-url="{% url 'validate_username' %}" id="signup_form">
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+    {% for field in form.visible_fields  %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field|add_class:'form-control bg-light' }}
+      {% for error in field.errors %}
+        <span class="help-block text-danger">{{ error }}</span>
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary float-right px-4 my-4" id="submit_btn">Sign Up</button>
+  </form>
+
+  <div class="card my-4">
+    <div class="card-body text-center">
+      Already have an account? <a href="{% url 'login' %}" class="card-link">Login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $("#id_username").change(function () {
+      var form = $(this).closest("form");
+      $.ajax({
+        url: form.attr("data-validate-username-url"),
+        data: form.serialize(),
+        dataType: 'json',
+        success: function (data) {
+          if (data.is_taken) {
+            alert(data.error_message);
+          }
+        }
+      });
+
+    });
+  </script>
+
+  <script type="text/javascript">
+  $(function () {
+    $('#signup_form').on('submit', function () {
+        $('#submit_btn').text('Signing Up...');
+        $(this).submit();
+      return false;
+    });
+  });
+  </script>
+{% endblock %}

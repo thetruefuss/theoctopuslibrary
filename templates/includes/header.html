@@ -1,0 +1,44 @@
+{% load pinax_messages_tags %}
+
+<div class="container my-4">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light py-4">
+    <a class="navbar-brand text-secondary" href="{% url 'homepage' %}">The Octopus Library</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbarDropdown" aria-controls="topNavbarDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="topNavbarDropdown">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a href="{% url 'book_post' %}">
+            <button class="btn btn-info text-dark" id="submit_book_btn">Submit a Book</button>
+          </a>
+        </li>
+        {% if not request.user.is_authenticated %}
+        <li class="nav-item ml-4">
+          <a class="btn btn-outline-info" href="{% url 'login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-success" href="{% url 'signup' %}">Sign Up</a>
+        </li>
+        {% else %}
+        <li class="nav-item dropdown">
+          {% with user|unread_thread_count as user_unread %}
+          <a class="nav-link dropdown-toggle pl-4 py-0" href="#" id="topNavbarDropdownLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="{{request.user.profile.get_picture}}" id="avatar">
+            {{ request.user.profile.screen_name }}
+            {% if user_unread %}<span id="unread-msg-count">{{ user_unread }}</span>{% endif %}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="topNavbarDropdownLink">
+            <a class="dropdown-item" href="{% url 'user_profile' request.user.username %}">Profile</a>
+            <a class="dropdown-item" href="{% url 'book_threads' request.user.username %}">Threads</a>
+            <a class="dropdown-item" href="{% url 'pinax_messages:inbox' %}">Inbox {% if user_unread %}<span class="badge bg-light">{{ user_unread }}</span>{% endif %}</a>
+            <a class="dropdown-item" href="{% url 'settings' %}">Settings</a>
+            <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+          </div>
+          {% endwith %}
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+</div>

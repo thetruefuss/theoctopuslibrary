@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block stylesheet %}
+<style>
+.card-partition {
+  float: right;
+  width: 70%;
+}
+.card-photo-area {
+  float: left;
+  width: 30%;
+  max-height: 160px;
+  overflow: hidden;
+}
+.card-photo-area img {
+  width: 90%;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container my-4 mx-auto" style="width: 50rem;">
+
+<h5 class="text-secondary">Profile</h5>
+<div class="card">
+  <div class="card-body">
+    <div class="card-partition">
+      <h5><a href="{{ book.get_absolute_url }}" class="card-link text-dark">{{profile.screen_name}}</a></h5>
+      <p class="card-text my-0 text-muted">Phone Number: {{ profile.phone_number }}</p>
+      <p class="card-text my-0 text-muted">Location: {{ profile.location }}</p>
+      <p class="card-text my-0 text-muted">Active Threads: {{ active_threads }}</p>
+      <p class="card-text my-0 text-muted">Deactive Threads: {{ deactive_threads }}</p>
+    </div>
+
+    <div class="card-photo-area">
+      <img src="{{ user.profile.get_picture }}">
+    </div>
+
+    <div class="clearfix">
+      <div class="float-right">
+        <a href="{% url 'book_threads' user.username %}" class="btn btn-primary py-1">View Submitted Content</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  function activatePlacesSearch() {
+    var input = document.getElementById('id_location');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+  }
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&libraries=places&callback=activatePlacesSearch"></script>
+{% endblock %}

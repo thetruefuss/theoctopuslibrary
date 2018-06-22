@@ -1,0 +1,37 @@
+<div class="container">
+<style>
+  .card-partition {
+    float: right;
+    width: 70%;
+  }
+  .card-photo-left {
+    float: left;
+    width: 30%;
+    max-height: 160px;
+    overflow: hidden;
+  }
+  .card-photo-left img {
+    width: 90%;
+  }
+</style>
+
+<div class="card mb-2" style="border: 0;">
+  <div class="card-body">
+    <div class="card-partition">
+      <h5 class="card-link text-dark">{{ user.profile.screen_name }}</h5>
+      <p class="card-text my-0"><em class="text-secondary">{{ user.profile.phone_number }}</em></p>
+      <p class="card-text my-0"><em class="text-secondary">{{ user.profile.location }}</em></p>
+    </div>
+
+    <div class="card-photo-left">
+        <img src="{{ user.profile.get_picture }}">
+    </div>
+
+    <div class="clearfix">
+      <div class="float-right">
+        <a href="{% url "pinax_messages:message_user_create" user_id=user.id %}" class="btn btn-primary py-1">Start Conversation</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load pinax_messages_tags %}
+{% load widget_tweaks %}
+
+{% block title %}<title>Message Details</title>{% endblock %}
+
+
+{% block content %}
+    <div class="card p-4 my-4 mx-auto" style="width: 50rem;" id="message-threads">
+      <h5>
+        {{ thread.subject }}
+        <a class="btn btn-outline-secondary btn-sm float-right" href="{% url "pinax_messages:thread_delete" thread.pk %}">
+          Delete Chat
+        </a>
+      </h5>
+      <hr>
+
+    {% for message in thread.messages.all %}
+      {% if message.sender == request.user %}
+      <li>
+        <a href="{% url 'user_profile' message.sender.username %}" title="{{ message.sender.profile.screen_name }}">
+        <img src="{{ message.sender.profile.get_picture }}" class="picture">
+        </a>
+        <div class="mx-4">
+          <div class="speech-bubble-1">
+            <p>{{ message.content|urlize|linebreaks }}</p>
+          </div>
+          <small class="float-right text-muted">{{ message.sent_at|naturaltime }}</small>
+        </div>
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'user_profile' message.sender.username %}" title="{{ message.sender.profile.screen_name }}">
+        <img src="{{ message.sender.profile.get_picture }}" class="picture">
+        </a>
+        <div class="mx-4">
+          <div class="speech-bubble-2">
+            <p>{{ message.content|urlize|linebreaks }}</p>
+          </div>
+          <small class="float-right text-muted">{{ message.sent_at|naturaltime }}</small>
+        </div>
+      </li>
+      {% endif %}
+    {% endfor %}
+
+
+    <form id="message_form" action="{% url "pinax_messages:thread_detail" thread.pk %}" method="post">
+      {% csrf_token %}
+
+      {% for hidden in form.hidden_fields %}
+          {{ hidden }}
+      {% endfor %}
+
+      {% for field in form.visible_fields  %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field|add_class:'form-control bg-light' }}
+        {% for error in field.errors %}
+          <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary float-right px-4 my-4" id="submit_btn">Send</button>
+      <a href="{% url "pinax_messages:inbox" %}" class="btn btn-default float-right px-4 my-4 mr-1">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+$(function () {
+  $('#message_form').on('submit', function () {
+      $('#submit_btn').text('Sending...');
+      $(this).submit();
+    return false;
+  });
+});
+</script>
+{% endblock %}

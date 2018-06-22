@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load pinax_messages_tags %}
+
+{% block title %}<title>Inbox</title>{% endblock %}
+
+{% block stylesheet %}
+<style media="screen">
+  .unread {
+    color: red;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card p-4 my-4 mx-auto" style="width: 50rem;">
+  <h5>
+    Inbox
+    <a class="btn btn-outline-secondary btn-sm float-right" href="{% url "pinax_messages:message_create" %}">
+      New Message
+    </a>
+  </h5>
+  <hr>
+
+  {% for thread in threads %}
+  <div class="card my-2 p-2 bg-light{% if thread|unread:user %} unread{% endif %}">
+    <a href="{{thread.get_absolute_url}}" class="card-link">
+        <div class="text-secondary">{{ thread.users.all|join:" | " }}</div>
+        <div class="latest-message">
+            <h6 class="text-dark">{{ thread.subject|truncatewords:10 }}</h6>
+            <p class="text-muted">{{ thread.latest_message.content|truncatewords:15 }}</p>
+        </div>
+    </a>
+  </div>
+  {% empty %}
+      <div>You have no messages.</div>
+  {% endfor %}
+</div>
+{% endblock %}

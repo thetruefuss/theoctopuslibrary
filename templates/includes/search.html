@@ -1,0 +1,34 @@
+<div class="container">
+  <form action="{% url 'search_results' %}" method="get">
+    <div class="input-group my-3">
+      <input type="text" class="form-control" placeholder="All Pakistan" name="location" id="search_by_location">
+      <select class="form-control" name="category" id="search_by_category">
+        <option value="" disabled selected>Select Category</option>
+
+        <option value="000">Computer science, information and general works</option>
+
+        <option value="100">Philosophy and psychology</option>
+
+        <option value="200">Religion</option>
+
+        <option value="300">Social Sciences</option>
+
+        <option value="400">Language</option>
+
+        <option value="500">Science</option>
+
+        <option value="600">Technology and applied science</option>
+
+        <option value="700">Arts and recreation</option>
+
+        <option value="800">Literature</option>
+
+        <option value="900">History and geography</option>
+      </select>
+      <input type="text" class="form-control" placeholder="Search Books" name="search_query" id="search_by_title">
+      <div class="input-group-append">
+        <button class="btn btn-primary px-4" type="submit" id="search_submit">Search</button>
+      </div>
+    </div>
+  </form>
+</div>

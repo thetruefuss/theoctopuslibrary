@@ -1,0 +1,106 @@
+.navbar {
+	font-weight: 600;
+}
+.btn {
+	border-radius: 0;
+	font-weight: 600;
+}
+.btn-primary {
+	background-image: linear-gradient(-180deg, #00BCD4 0%, #0496a9 90%);
+}
+.btn-danger {
+	background-image: linear-gradient(-180deg, #FF5722 0%, #c7431a 90%);
+}
+form {
+	font-weight: 600;
+}
+#submit_book_btn {
+	background: url(/static/img/plus_icon.png) 8px 8px no-repeat;
+	padding-left: 35px;
+	background-size: 18px;
+}
+#avatar {
+	width: 36px;
+	height: 36px;
+	border-radius: 50px;
+}
+#search_by_location {
+	background: url(/static/img/location_icon.png) 8px 8px no-repeat;
+	padding-left: 35px;
+	background-size: 18px;
+}
+#search_by_category {
+	background: url(/static/img/category_icon.png) 8px 8px no-repeat;
+	padding-left: 35px;
+	background-size: 18px;
+}
+#search_by_title {
+	background: url(/static/img/search_icon.png) 8px 8px no-repeat;
+	padding-left: 35px;
+	background-size: 18px;
+}
+#message-threads li {
+	list-style: none;
+	padding: .6em 0;
+}
+#message-threads li h5 {
+	margin: 0;
+	margin-bottom: .2em;
+}
+#message-threads li div {
+	margin-left: 50px;
+}
+#message-threads .picture {
+	width: 40px;
+	border-radius: 50%;
+	float: left;
+}
+#message-threads .speech-bubble-1 {
+	position: relative;
+	background: #17a2b8;
+	border-radius: .4em;
+	padding: 10px;
+	color: white;
+}
+#message-threads .speech-bubble-1:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-right-color: #17a2b8;
+	border-left: 0;
+	margin-top: -10px;
+	margin-left: -10px;
+}
+#message-threads .speech-bubble-2 {
+	position: relative;
+	background: #f8f9fa;
+	border-radius: .4em;
+	padding: 10px;
+}
+#message-threads .speech-bubble-2:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-right-color: #f8f9fa;
+	border-left: 0;
+	margin-top: -10px;
+	margin-left: -10px;
+}
+.navbar span#unread-msg-count {
+	position: absolute;
+	font-size: 11px;
+	top: -15px;
+	right: 0px;
+	background-color: #03a9f4;
+	padding: 0px 5px;
+	border-radius: 50%;
+	color: white;
+}
