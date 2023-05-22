@@ -16,5 +16,5 @@ Pillow==5.1.0
 PyJWT==1.6.3
 python-decouple==3.1
 pytz==2018.4
-requests==2.18.4
+requests==2.31.0
 urllib3==1.22
